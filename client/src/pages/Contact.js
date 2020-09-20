@@ -33,7 +33,7 @@ function Contact(props) {
       </Flex>
       <Image
         boxSize={["400px", "400px", "400px", "500px"]}
-        src="/images/backbend.webp"
+        src="/images/yoga_studio.jpg"
         alt="Charlotte in a yoga pose"
       />
     </Stack>
