@@ -1,42 +1,118 @@
-import React from "react";
-
+import React, { useState } from "react";
 import {
-  ButtonGroup,
-  Heading,
-  Image,
   Flex,
-  Stack,
+  Box,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
   Button,
+  useToast,
+  Link,
+  Text,
 } from "@chakra-ui/core";
+import { useHistory } from "react-router-dom";
+import { useUserContext } from "../contexts/userContext";
 
-function Login(props) {
+function Login() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const history = useHistory();
+  const toast = useToast();
+  const [, dispatch] = useUserContext();
+
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setFormData((oldState) => {
+      return {
+        ...oldState,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch(`/api/auth/login`, {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res?.data?.user) {
+          dispatch({
+            type: "login",
+            user: res?.data?.user,
+          });
+          history.push("/");
+        } else if (res?.data?.errors) {
+          const errors = res?.data?.errors;
+          if (errors) {
+            errors.forEach(({ title, description }) => {
+              toast({
+                position: "top",
+                title,
+                description,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              });
+            });
+          }
+        }
+      });
+  };
   return (
-    <Stack
-      direction={["column-reverse", "column-reverse", "row", "row"]}
-      spacing={8}
-      align="center"
-      justify="center"
-      gridArea="main"
-    >
-      <Flex direction="column" p="10" align="center" justify="center">
-        <Heading as="h1" pb="1em" size="2xl" fontFamily="custom">
-          Charlotte Resnick Yoga
-        </Heading>
-        <ButtonGroup spacing="4">
-          <Button variant="outline" size="lg" border="1px">
-            about
-          </Button>
-          <Button colorScheme="yellow" variant="solid" size="lg">
-            classes
-          </Button>
-        </ButtonGroup>
-      </Flex>
-      <Image
-        boxSize={["400px", "400px", "400px", "500px"]}
-        src="/images/yoga_studio.jpg"
-        alt="Charlotte in a yoga pose"
-      />
-    </Stack>
+    <Flex width="full" align="center" justifyContent="center" gridArea="main">
+      <Box
+        p={8}
+        maxWidth="500px"
+        borderWidth={1}
+        borderRadius={8}
+        boxShadow="lg"
+      >
+        <Box textAlign="center">
+          <Heading>Login</Heading>
+        </Box>
+        <Box my={4} textAlign="left" size="xl">
+          <form onSubmit={handleSubmit}>
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                type="email"
+                placeholder="test@test.com"
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl mt={6} isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                placeholder="*******"
+                onChange={handleChange}
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              colorScheme="yellow"
+              variant="solid"
+              width="full"
+              mt={4}
+            >
+              Submit
+            </Button>
+          </form>
+        </Box>
+        <Text>
+          Don't have an account?{" "}
+          <Link color="yellow.500" href="/register">
+            Register.
+          </Link>
+        </Text>
+      </Box>
+    </Flex>
   );
 }
 

@@ -35,6 +35,11 @@ const NavbarLinks = (
         classes
       </Text>
     </LinkableNavbarItem>
+    <LinkableNavbarItem url="/pricing">
+      <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
+        pricing
+      </Text>
+    </LinkableNavbarItem>
     <LinkableNavbarItem url="/contact">
       <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
         contact

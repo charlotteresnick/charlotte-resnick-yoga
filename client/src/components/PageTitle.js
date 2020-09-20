@@ -15,6 +15,7 @@ function PageTitle({ title, ...rest }) {
         borderBottom="1px"
         display="inline-block"
         mx="auto"
+        fontFamily="custom"
         {...rest}
       >
         {title || "No Title Passed"}

@@ -1,42 +1,99 @@
 import React from "react";
 
 import {
-  ButtonGroup,
-  Heading,
   Image,
-  Flex,
   Stack,
+  Box,
+  Text,
+  Flex,
+  Heading,
+  FormControl,
+  FormLabel,
+  Textarea,
+  Input,
   Button,
 } from "@chakra-ui/core";
+import PageTitle from "../components/PageTitle";
+
+const ContactHeader = () => {
+  return (
+    <Box textAlign="center">
+      <Heading fontSize="2xl">Contact Me</Heading>
+    </Box>
+  );
+};
+const ContactForm = () => {
+  return (
+    <Box my={4} textAlign="left">
+      <form>
+        <FormControl>
+          <FormLabel>Name</FormLabel>
+          <Input type="text" placeholder="Enter your name" />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" placeholder="Enter your email" />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Message</FormLabel>
+          <Textarea type="textarea" placeholder="Enter your message" />
+        </FormControl>
+
+        <Button colorScheme="yellow" variant="solid" type="submit">
+          Submit
+        </Button>
+      </form>
+    </Box>
+  );
+};
 
 function Contact(props) {
   return (
-    <Stack
-      direction={["column-reverse", "column-reverse", "row", "row"]}
-      spacing={8}
-      align="center"
-      justify="center"
+    <Box
       gridArea="main"
+      overflow="scroll"
+      direction="column"
+      px="10%"
+      justify="center"
+      align="center"
     >
-      <Flex direction="column" p="10" align="center" justify="center">
-        <Heading as="h1" pb="1em" size="2xl" fontFamily="custom">
-          Charlotte Resnick Yoga
-        </Heading>
-        <ButtonGroup spacing="4">
-          <Button variant="outline" size="lg" border="1px">
-            about
-          </Button>
-          <Button colorScheme="yellow" variant="solid" size="lg">
-            classes
-          </Button>
-        </ButtonGroup>
-      </Flex>
-      <Image
-        boxSize={["400px", "400px", "400px", "500px"]}
-        src="/images/yoga_studio.jpg"
-        alt="Charlotte in a yoga pose"
-      />
-    </Stack>
+      <PageTitle title="Contact" />
+      <Stack
+        direction={["column", "column", "row", "row"]}
+        spacing={8}
+        align="center"
+        justify="space-evenly"
+      >
+        <Image
+          maxWidth="325px"
+          src="/images/leaf.jpg"
+          alt="Charlotte in a yoga pose"
+        />
+        <Box direction="column" px="10" align="center" justify="center">
+          <Text marginBottom="5">
+            I'm currently located in Coral Gables, serving the Coral Gables,
+            Coconut Grove, and Brickell areas. Please reach out to me at
+            charlotte@charlotteresnickyoga.com with inquiries.
+          </Text>
+          <Box
+            borderWidth={1}
+            maxWidth="900px"
+            maxHeight="375px"
+            borderRadius={4}
+            textAlign="center"
+            boxShadow="lg"
+            overflow="scroll"
+          >
+            <Box px={3} pt={2}>
+              <ContactHeader />
+              <ContactForm />
+            </Box>
+          </Box>
+        </Box>
+      </Stack>
+    </Box>
   );
 }
 

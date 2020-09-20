@@ -1,42 +1,152 @@
-import React from "react";
-
+import React, { useState } from "react";
 import {
-  ButtonGroup,
-  Heading,
-  Image,
   Flex,
-  Stack,
+  Box,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
   Button,
+  useToast,
+  Link,
+  Text,
 } from "@chakra-ui/core";
+import { useHistory } from "react-router-dom";
+import { useUserContext } from "../contexts/userContext";
 
-function Register(props) {
+function Register() {
+  const toast = useToast();
+  const [, dispatch] = useUserContext();
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+  });
+  const history = useHistory();
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setUser((oldState) => {
+      return {
+        ...oldState,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    let response = await fetch(`/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          password: user.password,
+        },
+      }),
+    });
+    await setUser({
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+    });
+    let res = await response.json();
+    if (res?.data?.user) {
+      dispatch({
+        type: "login",
+        user: res?.data?.user,
+      });
+      history.push("/");
+    } else {
+      toast({
+        position: "top",
+        title: "An account with this email already exists",
+        description: "Try logging in",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
   return (
-    <Stack
-      direction={["column-reverse", "column-reverse", "row", "row"]}
-      spacing={8}
+    <Flex
+      width="full"
       align="center"
-      justify="center"
+      justifyContent="center"
+      overflow="scroll"
       gridArea="main"
     >
-      <Flex direction="column" p="10" align="center" justify="center">
-        <Heading as="h1" pb="1em" size="2xl" fontFamily="custom">
-          Charlotte Resnick Yoga
-        </Heading>
-        <ButtonGroup spacing="4">
-          <Button variant="outline" size="lg" border="1px">
-            about
-          </Button>
-          <Button colorScheme="yellow" variant="solid" size="lg">
-            classes
-          </Button>
-        </ButtonGroup>
-      </Flex>
-      <Image
-        boxSize={["400px", "400px", "400px", "500px"]}
-        src="/images/yoga_studio.jpg"
-        alt="Charlotte in a yoga pose"
-      />
-    </Stack>
+      <Box
+        p={8}
+        maxWidth="500px"
+        borderWidth={1}
+        borderRadius={8}
+        boxShadow="lg"
+      >
+        <Box textAlign="center">
+          <Heading>Create An Account</Heading>
+        </Box>
+        <Box my={4} textAlign="left" size="xl">
+          <form onSubmit={handleSubmit}>
+            <FormControl mt={4} isRequired>
+              <FormLabel>First Name</FormLabel>
+              <Input
+                type="first_name"
+                placeholder="John"
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl mt={4} isRequired>
+              <FormLabel>Last Name</FormLabel>
+              <Input
+                type="last_name"
+                placeholder="Doe"
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl mt={4} isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                type="email"
+                placeholder="test@test.com"
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl mt={4} isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                placeholder="*******"
+                onChange={handleChange}
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              colorScheme="yellow"
+              variant="solid"
+              width="full"
+              mt={4}
+            >
+              Submit
+            </Button>
+          </form>
+        </Box>
+        <Box textAlign="center">
+          <Text>
+            Already have an account?{" "}
+            <Link color="yellow.500" href="/login">
+              Login.
+            </Link>
+          </Text>
+        </Box>
+      </Box>
+    </Flex>
   );
 }
 
