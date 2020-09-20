@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@chakra-ui/core";
+import { Grid, Box } from "@chakra-ui/core";
 import { Navbar, Footer } from "../components";
 
 function FullWidth({ children }) {
@@ -14,6 +14,7 @@ function FullWidth({ children }) {
       height="100vh"
     >
       <Navbar />
+      {/* Ideally add grid-area: main to the child component automagically */}
       {children}
       <Footer />
     </Grid>

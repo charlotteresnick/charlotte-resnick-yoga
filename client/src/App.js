@@ -1,6 +1,6 @@
 import React from "react";
 import { ChakraProvider } from "@chakra-ui/core";
-import { Home } from "./pages";
+import { Home, About, Contact, Classes, Register, Login } from "./pages";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { FullWidth } from "./layouts";
 
@@ -14,6 +14,31 @@ function App() {
           <Route exact path="/">
             <FullWidth>
               <Home />
+            </FullWidth>
+          </Route>
+          <Route path="/about">
+            <FullWidth>
+              <About />
+            </FullWidth>
+          </Route>
+          <Route path="/contact">
+            <FullWidth>
+              <Contact />
+            </FullWidth>
+          </Route>
+          <Route path="/classes">
+            <FullWidth>
+              <Classes />
+            </FullWidth>
+          </Route>
+          <Route path="/register">
+            <FullWidth>
+              <Register />
+            </FullWidth>
+          </Route>
+          <Route path="/login">
+            <FullWidth>
+              <Login />
             </FullWidth>
           </Route>
         </Switch>

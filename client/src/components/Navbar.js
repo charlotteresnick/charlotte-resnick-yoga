@@ -80,6 +80,7 @@ const Navbar = (props) => {
       bg="white"
       left="0"
       right="0"
+      gridArea="nav"
       {...props}
     >
       <Flex align="center" mr={5}>

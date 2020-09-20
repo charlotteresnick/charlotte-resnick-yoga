@@ -9,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/core";
 
-function Home(props) {
+function Contact(props) {
   return (
     <Stack
       direction={["column-reverse", "column-reverse", "row", "row"]}
@@ -40,4 +40,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default Contact;
