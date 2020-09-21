@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { GrFormAdd, GrFormSubtract } from "react-icons/gr";
 import {
+  useDisclosure,
   Stack,
   Box,
   Text,
@@ -9,10 +10,14 @@ import {
   Link,
   IconButton,
   Flex,
+  Button,
 } from "@chakra-ui/core";
 import PageTitle from "../components/PageTitle";
+import ClassRegisterModal from "../components/ClassRegisterModal";
 
 function Classes(props) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box
       gridArea="main"
@@ -22,7 +27,8 @@ function Classes(props) {
       justify="center"
       align="center"
     >
-      <PageTitle title="Contact" />
+      <ClassRegisterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <PageTitle title="Classes" />
       <Stack
         direction={["column", "column", "row", "row"]}
         spacing={8}
@@ -63,6 +69,7 @@ function Classes(props) {
                 aria-label="Enroll"
                 size="sm"
                 icon={<GrFormAdd />}
+                onClick={onOpen}
               ></IconButton>
             </Flex>
             <Text>
