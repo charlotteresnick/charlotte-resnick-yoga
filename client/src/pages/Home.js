@@ -7,6 +7,7 @@ import {
   Flex,
   Stack,
   Button,
+  Link,
 } from "@chakra-ui/core";
 
 function Home(props) {
@@ -23,12 +24,16 @@ function Home(props) {
           Charlotte Resnick Yoga
         </Heading>
         <ButtonGroup spacing="4">
-          <Button variant="outline" size="lg" border="1px">
-            about
-          </Button>
-          <Button colorScheme="yellow" variant="solid" size="lg">
-            classes
-          </Button>
+          <Link href="/about">
+            <Button variant="outline" size="lg" border="1px">
+              about
+            </Button>
+          </Link>
+          <Link href="/classes">
+            <Button colorScheme="yellow" variant="solid" size="lg">
+              classes
+            </Button>
+          </Link>
         </ButtonGroup>
       </Flex>
       <Image

@@ -21,8 +21,8 @@ function Pricing(props) {
         justify="space-evenly"
       >
         <Image
-          maxWidth="500px"
-          src="/images/puja.jpg"
+          maxWidth="300px"
+          src="/images/trees.jpg"
           alt="Charlotte in a yoga pose"
         />
         <Box
@@ -30,7 +30,6 @@ function Pricing(props) {
           p="10"
           align="center"
           justify="center"
-          width="475px"
           textAlign="center"
         >
           <Heading fontSize="2xl" pb="4" mb="4" borderBottom="1pt solid black">

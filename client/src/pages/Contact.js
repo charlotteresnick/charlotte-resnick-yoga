@@ -12,6 +12,7 @@ import {
   Textarea,
   Input,
   Button,
+  Link,
 } from "@chakra-ui/core";
 import PageTitle from "../components/PageTitle";
 
@@ -73,9 +74,15 @@ function Contact(props) {
         />
         <Box direction="column" px="10" align="center" justify="center">
           <Text marginBottom="5">
-            I'm currently located in Coral Gables, serving the Coral Gables,
-            Coconut Grove, and Brickell areas. Please reach out to me at
-            charlotte@charlotteresnickyoga.com with inquiries.
+            I'm currently living and teaching in San Francisco. Please fill out
+            the contact form below or reach out to me at{" "}
+            <Link
+              color="yellow.500"
+              href="mailto:charlotte@charlotteresnickyoga.com?subject=Private Session Inquiry"
+            >
+              charlotte@charlotteresnickyoga.com
+            </Link>{" "}
+            with inquiries or to book a private session.
           </Text>
           <Box
             borderWidth={1}

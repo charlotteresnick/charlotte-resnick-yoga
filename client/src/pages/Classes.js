@@ -1,6 +1,15 @@
 import React from "react";
 
-import { Stack, Box, Text, Heading, Link } from "@chakra-ui/core";
+import { GrFormAdd, GrFormSubtract } from "react-icons/gr";
+import {
+  Stack,
+  Box,
+  Text,
+  Heading,
+  Link,
+  IconButton,
+  Flex,
+} from "@chakra-ui/core";
 import PageTitle from "../components/PageTitle";
 
 function Classes(props) {
@@ -44,7 +53,18 @@ function Classes(props) {
             maxWidth="450px"
             textAlign="left"
           >
-            <Heading fontSize="md">Large Group - noon-1:00 a.m. - $15</Heading>
+            <Flex direction="row" justifyContent="space-between">
+              <Heading fontSize="md">
+                Large Group - noon-1:00 a.m. - $15
+              </Heading>
+              <IconButton
+                colorScheme="black"
+                variant="ghost"
+                aria-label="Enroll"
+                size="sm"
+                icon={<GrFormAdd />}
+              ></IconButton>
+            </Flex>
             <Text>
               Location:{" "}
               <Link color="yellow.500">Alamo Square Park, San Francisco</Link>
@@ -62,7 +82,18 @@ function Classes(props) {
             maxWidth="450px"
             textAlign="left"
           >
-            <Heading fontSize="md">Small Group - 9:30-10:30 a.m. - $30</Heading>
+            <Flex direction="row" justifyContent="space-between">
+              <Heading fontSize="md">
+                Small Group - 9:30-10:30 a.m. - $30
+              </Heading>
+              <IconButton
+                colorScheme="black"
+                variant="ghost"
+                aria-label="Enroll"
+                size="sm"
+                icon={<GrFormAdd />}
+              ></IconButton>
+            </Flex>
             <Text>
               Location:{" "}
               <Link color="yellow.500">Alamo Square Park, San Francisco</Link>
@@ -97,7 +128,18 @@ function Classes(props) {
             maxWidth="450px"
             textAlign="left"
           >
-            <Heading fontSize="md">Large Group - noon-1:00 a.m. - $15</Heading>
+            <Flex direction="row" justifyContent="space-between">
+              <Heading fontSize="md">
+                Large Group - noon-1:00 a.m. - $15
+              </Heading>
+              <IconButton
+                colorScheme="black"
+                variant="ghost"
+                aria-label="Remove class"
+                size="sm"
+                icon={<GrFormSubtract />}
+              ></IconButton>
+            </Flex>
             <Text>
               Location:{" "}
               <Link color="yellow.500">Alamo Square Park, San Francisco</Link>
@@ -115,7 +157,18 @@ function Classes(props) {
             maxWidth="450px"
             textAlign="left"
           >
-            <Heading fontSize="md">Small Group - 9:30-10:30 a.m. - $30</Heading>
+            <Flex direction="row" justifyContent="space-between">
+              <Heading fontSize="md">
+                Small Group - 9:00-10:00 a.m. - $15
+              </Heading>
+              <IconButton
+                colorScheme="black"
+                variant="ghost"
+                aria-label="Remove class"
+                size="sm"
+                icon={<GrFormSubtract />}
+              ></IconButton>
+            </Flex>{" "}
             <Text>
               Location:{" "}
               <Link color="yellow.500">Alamo Square Park, San Francisco</Link>
