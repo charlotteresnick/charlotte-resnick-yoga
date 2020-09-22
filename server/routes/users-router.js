@@ -1,5 +1,10 @@
 const usersRouter = require("express").Router();
+const User = require("../models/User");
 
-const usersController = require("../controllers/users-controller");
+usersRouter.get("/", (req, res) => {
+  User.query().then((users) => {
+    res.json(users);
+  });
+});
 
 module.exports = usersRouter;

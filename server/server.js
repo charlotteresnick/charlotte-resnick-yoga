@@ -6,10 +6,10 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 
-const authHelpers = require("./services/auth-helpers");
+// const authHelpers = require("./services/auth-helpers");
 
-const authRouter = require("./routes/auth-router");
-const userRoutes = require("./routes/users-router");
+// const authRouter = require("./routes/auth-router");
+const userRouter = require("./routes/users-router");
 
 const app = express();
 require("dotenv").config();
@@ -40,8 +40,8 @@ app.listen(PORT, () => {
 app.get("/", (req, res) => {
   res.send("Ok");
 });
-app.use("/api/auth", authRouter);
-app.use("/api/users", userRoutes);
+// app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({
