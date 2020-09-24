@@ -3,13 +3,13 @@ exports.up = (knex) => {
     t.uuid("id").defaultTo(knex.raw("uuid_generate_v4()"));
     t.string("name").notNullable();
     t.string("description").notNullable();
-    t.datetime("time_start").notNullable();
-    t.datetime("time_end").notNullable();
+    t.datetime("timeStart").notNullable();
+    t.datetime("timeEnd").notNullable();
     t.integer("price").notNullable();
     t.string("location").notNullable();
-    t.integer("max_students").notNullable();
-    t.timestamp("created_at").defaultTo(knex.fn.now());
-    t.timestamp("updated_at").defaultTo(knex.fn.now());
+    t.integer("maxStudents").notNullable();
+    t.timestamp("createdAt").defaultTo(knex.fn.now());
+    t.timestamp("updatedAt").defaultTo(knex.fn.now());
   });
 };
 

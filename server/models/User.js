@@ -7,6 +7,14 @@ class User extends Model {
   static get tableName() {
     return "users";
   }
+
+  static get virtualAttributes() {
+    return ["fullName"];
+  }
+
+  fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }
 
 module.exports = User;

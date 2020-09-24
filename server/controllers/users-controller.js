@@ -1,31 +1,34 @@
-// const bcrypt = require("bcryptjs");
-// const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
+const { generateAccessToken } = require("../utils/auth-helpers");
 
-// const usersController = {};
+const usersController = {};
 
-// usersController.create = async (req, res, next) => {
-//   try {
-//     const salt = await bcrypt.genSaltSync();
-//     const hash = await bcrypt.hashSync(req.body.user.password, salt);
-//     let user = await new User({
-//       username: req.body.user.username,
-//       email: req.body.user.email,
-//       password_digest: hash,
-//     });
-//     await user.save();
-//     req.login(user, (err) => {
-//       if (err) return next(err);
-//       res.status(201).json({
-//         message: "user created",
-//         auth: true,
-//         data: {
-//           user,
-//         },
-//       });
-//     });
-//   } catch {
-//     next();
-//   }
-// };
+usersController.create = async (req, res) => {
+  const { firstName, lastName, email, password } = req.body.user;
+  const salt = await bcrypt.genSaltSync();
+  const passwordHash = await bcrypt.hashSync(password, salt);
 
-// module.exports = usersController;
+  try {
+    await User.query().insert({
+      firstName,
+      lastName,
+      email,
+      passwordHash,
+    });
+  } catch (err) {
+    return res.status(409).json({
+      message: "user already exists",
+      data: {},
+    });
+  }
+
+  return res.status(201).json({
+    message: "user created",
+    data: {
+      token: generateAccessToken({ email, isAdmin: false }),
+    },
+  });
+};
+
+module.exports = usersController;
