@@ -26,10 +26,15 @@ authController.login = async (req, res) => {
     });
   }
 
+  const token = generateAccessToken({
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
+  res.cookie("token", token, { httpOnly: true });
   return res.status(200).json({
     message: "authenticated",
     data: {
-      token: generateAccessToken({ email: user.email, isAdmin: user.isAdmin }),
+      token,
     },
   });
 };

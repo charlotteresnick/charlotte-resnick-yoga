@@ -23,10 +23,12 @@ usersController.create = async (req, res) => {
     });
   }
 
+  const token = generateAccessToken({ email, isAdmin: false });
+  res.cookie("token", token, { httpOnly: true });
   return res.status(201).json({
     message: "user created",
     data: {
-      token: generateAccessToken({ email, isAdmin: false }),
+      token,
     },
   });
 };

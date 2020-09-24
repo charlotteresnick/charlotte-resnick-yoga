@@ -1,46 +1,51 @@
 const bcrpyt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const express_jwt = require("express-jwt");
+
 const User = require("../models/User");
 
-function comparePass(userPassword, databasePassword) {
-  return bcrpyt.compareSync(userPassword, databasePassword);
-}
+const { JWT_SECRET_TOKEN } = require("../utils/env");
+const PUBLIC_PATHS = ["/api/auth/login", "/api/auth/register"];
 
-function generateAccessToken({ email, isAdmin }) {
+const comparePass = (userPassword, databasePassword) => {
+  return bcrpyt.compareSync(userPassword, databasePassword);
+};
+
+const generateAccessToken = ({ email, isAdmin }) => {
   return jwt.sign({ email, isAdmin }, process.env.JWT_SECRET_TOKEN, {
     expiresIn: "1800s",
   });
-}
+};
 
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) return res.sendStatus(401); // if there isn't any token
+const jwtAuth = express_jwt({
+  secret: JWT_SECRET_TOKEN,
+  getToken: (req) => req.cookies.token,
+  algorithms: ["HS256"],
+}).unless({ path: PUBLIC_PATHS });
 
-  jwt.verify(token, process.env.JWT_SECRET_TOKEN, (err, user) => {
-    console.log(err);
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
-
-async function addFullUserToReq(req, res, next) {
-  let user;
-  try {
-    user = await User.query().findOne({ email: req.user.email });
-  } catch (err) {
-    console.log(err);
-    if (err || !user) return res.sendStatus(403);
+const respondAuthErr = (err, _, res, next) => {
+  if (err.name === "UnauthorizedError") {
+    res.status(401).send("Unauthorized");
   }
+};
 
-  req.user = user;
-  next();
-}
+const populateFullUser = async (req, res, next) => {
+  User.query()
+    .findOne({ email: req.user.email })
+    .then((user) => {
+      req.user = user;
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err || !user) return res.sendStatus(403);
+    });
+};
 
 module.exports = {
   comparePass,
   generateAccessToken,
-  authenticateToken,
-  addFullUserToReq,
+  jwtAuth,
+  respondAuthErr,
+  populateFullUser,
 };
