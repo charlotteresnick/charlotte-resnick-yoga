@@ -18,8 +18,8 @@ function Register() {
   const toast = useToast();
   const [, dispatch] = useUserContext();
   const [user, setUser] = useState({
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -43,16 +43,16 @@ function Register() {
       },
       body: JSON.stringify({
         user: {
-          first_name: user.first_name,
-          last_name: user.last_name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           password: user.password,
         },
       }),
     });
     await setUser({
-      first_name: "",
-      last_name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     });
@@ -97,7 +97,7 @@ function Register() {
             <FormControl mt={4} isRequired>
               <FormLabel>First Name</FormLabel>
               <Input
-                type="first_name"
+                type="firstName"
                 placeholder="John"
                 onChange={handleChange}
               />
@@ -105,7 +105,7 @@ function Register() {
             <FormControl mt={4} isRequired>
               <FormLabel>Last Name</FormLabel>
               <Input
-                type="last_name"
+                type="lastName"
                 placeholder="Doe"
                 onChange={handleChange}
               />

@@ -94,15 +94,17 @@ function Login() {
                 onChange={handleChange}
               />
             </FormControl>
-            <Button
-              type="submit"
-              colorScheme="yellow"
-              variant="solid"
-              width="full"
-              mt={4}
-            >
-              Submit
-            </Button>
+            <Link href="/classes">
+              <Button
+                type="submit"
+                colorScheme="yellow"
+                variant="solid"
+                width="full"
+                mt={4}
+              >
+                Submit
+              </Button>
+            </Link>
           </form>
         </Box>
         <Text>
