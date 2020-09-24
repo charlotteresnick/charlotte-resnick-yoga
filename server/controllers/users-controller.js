@@ -28,7 +28,12 @@ usersController.create = async (req, res) => {
   return res.status(201).json({
     message: "user created",
     data: {
-      token,
+      user: {
+        firstName,
+        lastName,
+        email,
+        isAdmin: false,
+      },
     },
   });
 };

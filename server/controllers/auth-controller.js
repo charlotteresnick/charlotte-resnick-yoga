@@ -9,11 +9,14 @@ authController.register = (req, res, next) => {
 };
 
 authController.login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.query().findOne({ email });
+  const {
+    user: { email: formEmail, password: formPassword },
+  } = req.body;
+
+  const user = await User.query().findOne({ email: formEmail });
 
   console.log();
-  if (!user || !comparePass(password, user.passwordHash)) {
+  if (!user || !comparePass(formPassword, user.passwordHash)) {
     return res.status(401).json({
       data: {
         errors: [
@@ -25,23 +28,28 @@ authController.login = async (req, res) => {
       },
     });
   }
-
+  const { email, isAdmin, firstName, lastName } = user;
   const token = generateAccessToken({
-    email: user.email,
-    isAdmin: user.isAdmin,
+    email,
+    isAdmin,
   });
   res.cookie("token", token, { httpOnly: true });
   return res.status(200).json({
     message: "authenticated",
     data: {
-      token,
+      user: {
+        email,
+        firstName,
+        lastName,
+        isAdmin,
+      },
     },
   });
 };
 
 authController.me = async (req, res) => {
   if (req.user) {
-    const { firstName, lastName, email, fullName } = req.user.toJSON();
+    const { firstName, lastName, email, fullName, isAdmin } = req.user.toJSON();
     return res.status(200).json({
       message: "ok",
       data: {
@@ -50,6 +58,7 @@ authController.me = async (req, res) => {
           lastName,
           email,
           fullName,
+          isAdmin,
         },
       },
     });
@@ -65,9 +74,8 @@ authController.me = async (req, res) => {
 
 authController.logout = (req, res) => {
   // Nothing to actually do here since logout is client side.
-  res.json({
+  return res.clearCookie("token").json({
     message: "logged out",
-    auth: false,
     data: {
       user: null,
     },
