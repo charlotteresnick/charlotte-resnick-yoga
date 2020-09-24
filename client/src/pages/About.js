@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Image, Flex, Stack, Text, Heading, Box } from "@chakra-ui/core";
+import { Image, Flex, Stack, Text, Box } from "@chakra-ui/core";
 import PageTitle from "../components/PageTitle";
 
 const Section = ({ isReversed, text, image }) => {

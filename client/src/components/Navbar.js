@@ -1,25 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Heading, Flex, Text, Button, ButtonGroup } from "@chakra-ui/core";
 import { GrSpa } from "react-icons/gr";
 
 import { CustomLink as Link } from ".";
 import { isEmpty } from "../util";
-import { useHistory } from "react-router-dom";
-
-const user = {
-  // name: "Charlotte",
-};
+import { useUserContext } from "../contexts/userContext";
 
 const LinkableNavbarItem = ({
   children,
   url,
   onlyLoggedIn = false,
   onlyLoggedOut = false,
+  adminOnly = false,
 }) => {
-  const shouldRender =
-    (onlyLoggedIn && !isEmpty(user)) ||
-    (onlyLoggedOut && isEmpty(user)) ||
-    (!onlyLoggedIn && !onlyLoggedOut);
+  const [state] = useUserContext();
+
+  let shouldRender = true;
+  if (onlyLoggedIn && onlyLoggedOut) {
+    shouldRender = false; // Can't have both enabled
+  } else if (onlyLoggedIn && isEmpty(state.user)) {
+    shouldRender = false;
+  } else if (onlyLoggedOut && !isEmpty(state.user)) {
+    shouldRender = false;
+  } else if (adminOnly && !state?.user?.isAdmin) {
+    shouldRender = false;
+  }
   return shouldRender ? <Link to={url}>{children}</Link> : null;
 };
 
@@ -43,6 +48,17 @@ const NavbarLinks = (
     <LinkableNavbarItem url="/contact">
       <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
         contact
+      </Text>
+    </LinkableNavbarItem>
+    <LinkableNavbarItem url="/admin" adminOnly>
+      <Text
+        mt={{ base: 4, md: 0 }}
+        mr={6}
+        color="red.400"
+        fontWeight={700}
+        display="block"
+      >
+        admin
       </Text>
     </LinkableNavbarItem>
   </>

@@ -1,5 +1,8 @@
 import React from "react";
 import { ChakraProvider } from "@chakra-ui/core";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { FullWidth } from "./layouts";
 import {
   Home,
   About,
@@ -8,35 +11,17 @@ import {
   Pricing,
   Register,
   Login,
+  Logout,
+  Admin,
 } from "./pages";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { FullWidth } from "./layouts";
-
 import customTheme from "./theme";
 import { UserProvider } from "./contexts/userContext";
+import { AuthenticatedRoute, UnauthenticatedRoute } from "./components";
 
 function App() {
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "login":
-        return {
-          ...state,
-          user: action.user,
-        };
-
-      case "logout":
-        return {
-          ...state,
-          user: {},
-        };
-
-      default:
-        return state;
-    }
-  };
   return (
     <ChakraProvider resetCSS theme={customTheme}>
-      <UserProvider reducer={reducer}>
+      <UserProvider>
         <Router>
           <Switch>
             <Route exact path="/">
@@ -64,16 +49,26 @@ function App() {
                 <Pricing />
               </FullWidth>
             </Route>
-            <Route path="/register">
+            <UnauthenticatedRoute path="/register">
               <FullWidth>
                 <Register />
               </FullWidth>
-            </Route>
-            <Route path="/login">
+            </UnauthenticatedRoute>
+            <UnauthenticatedRoute path="/login">
               <FullWidth>
                 <Login />
               </FullWidth>
+            </UnauthenticatedRoute>
+            <Route path="/logout">
+              <FullWidth>
+                <Logout />
+              </FullWidth>
             </Route>
+            <AuthenticatedRoute adminOnly path="/admin">
+              <FullWidth>
+                <Admin />
+              </FullWidth>
+            </AuthenticatedRoute>
           </Switch>
         </Router>
       </UserProvider>

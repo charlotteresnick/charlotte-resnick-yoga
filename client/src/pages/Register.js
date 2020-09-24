@@ -16,17 +16,18 @@ import { useUserContext } from "../contexts/userContext";
 
 function Register() {
   const toast = useToast();
+  const history = useHistory();
   const [, dispatch] = useUserContext();
-  const [user, setUser] = useState({
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
   });
-  const history = useHistory();
+
   const handleChange = (evt) => {
     const { name, value } = evt.target;
-    setUser((oldState) => {
+    setFormData((oldState) => {
       return {
         ...oldState,
         [name]: value,
@@ -36,34 +37,26 @@ function Register() {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    let response = await fetch(`/api/auth/register`, {
+    const res = await fetch(`/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          password: user.password,
-        },
+        user: formData,
       }),
     });
-    await setUser({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-    });
-    let res = await response.json();
-    if (res?.data?.user) {
+
+    if (res.status === 201) {
+      const {
+        data: { user },
+      } = await res.json();
       dispatch({
         type: "login",
-        user: res?.data?.user,
+        user,
       });
-      history.push("/");
-    } else {
+      history.push("/classes");
+    } else if (res.status === 409) {
       toast({
         position: "top",
         title: "An account with this email already exists",
@@ -73,7 +66,23 @@ function Register() {
         isClosable: true,
       });
     }
+
+    // await setUser({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   password: "",
+    // });
+
+    // if (res?.data?.user) {
+    //   dispatch({
+    //     type: "login",
+    //     user: res?.data?.user,
+    //   });
+    //   history.push("/");
+    // }
   };
+
   return (
     <Flex
       width="full"
@@ -97,17 +106,19 @@ function Register() {
             <FormControl mt={4} isRequired>
               <FormLabel>First Name</FormLabel>
               <Input
-                type="firstName"
+                type="text"
                 placeholder="John"
                 onChange={handleChange}
+                name="firstName"
               />
             </FormControl>
             <FormControl mt={4} isRequired>
               <FormLabel>Last Name</FormLabel>
               <Input
-                type="lastName"
+                type="text"
                 placeholder="Doe"
                 onChange={handleChange}
+                name="lastName"
               />
             </FormControl>
             <FormControl mt={4} isRequired>
@@ -116,6 +127,7 @@ function Register() {
                 type="email"
                 placeholder="test@test.com"
                 onChange={handleChange}
+                name="email"
               />
             </FormControl>
             <FormControl mt={4} isRequired>
@@ -124,6 +136,7 @@ function Register() {
                 type="password"
                 placeholder="*******"
                 onChange={handleChange}
+                name="password"
               />
             </FormControl>
             <Button

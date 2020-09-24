@@ -30,39 +30,36 @@ function Login() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    fetch(`/api/auth/login`, {
+
+    const res = await fetch(`/api/auth/login`, {
       method: "POST",
-      body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res?.data?.user) {
-          dispatch({
-            type: "login",
-            user: res?.data?.user,
-          });
-          history.push("/");
-        } else if (res?.data?.errors) {
-          const errors = res?.data?.errors;
-          if (errors) {
-            errors.forEach(({ title, description }) => {
-              toast({
-                position: "top",
-                title,
-                description,
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-              });
-            });
-          }
-        }
+      body: JSON.stringify({ user: formData }),
+    });
+
+    if (res.status === 200) {
+      const {
+        data: { user },
+      } = await res.json();
+      dispatch({
+        type: "login",
+        user,
       });
+      history.push("/classes");
+    } else if (res.status === 401) {
+      toast({
+        position: "top",
+        title: "error title",
+        description: "error description",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   };
   return (
     <Flex width="full" align="center" justifyContent="center" gridArea="main">
@@ -82,6 +79,7 @@ function Login() {
               <FormLabel>Email</FormLabel>
               <Input
                 type="email"
+                name="email"
                 placeholder="test@test.com"
                 onChange={handleChange}
               />
@@ -90,6 +88,7 @@ function Login() {
               <FormLabel>Password</FormLabel>
               <Input
                 type="password"
+                name="password"
                 placeholder="*******"
                 onChange={handleChange}
               />

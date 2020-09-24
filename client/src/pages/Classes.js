@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { GrFormAdd, GrFormSubtract } from "react-icons/gr";
 import {
@@ -10,7 +10,6 @@ import {
   Link,
   IconButton,
   Flex,
-  Button,
 } from "@chakra-ui/core";
 import PageTitle from "../components/PageTitle";
 import ClassRegisterModal from "../components/ClassRegisterModal";

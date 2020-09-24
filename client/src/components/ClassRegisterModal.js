@@ -14,13 +14,12 @@ import {
 } from "@chakra-ui/core";
 
 function ClassRegisterModal({ isOpen, onOpen, onClose }) {
-  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
   return (
     <>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        scrollBehavior={scrollBehavior}
+        scrollBehavior="inside"
         value="inside"
       >
         <ModalOverlay zIndex={3}>

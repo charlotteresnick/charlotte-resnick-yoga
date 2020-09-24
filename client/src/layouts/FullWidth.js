@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Box } from "@chakra-ui/core";
+import { Grid } from "@chakra-ui/core";
 import { Navbar, Footer } from "../components";
 
 function FullWidth({ children }) {

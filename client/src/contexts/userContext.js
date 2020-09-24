@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { isEmpty } from "../util";
 
 export const UserContext = createContext(null);
 
@@ -7,26 +6,54 @@ const initialValue = {
   user: null,
 };
 
-export const UserProvider = ({ reducer, children }) => {
+const reducer = (state, { type, user }) => {
+  switch (type) {
+    case "login":
+      return {
+        ...state,
+        user,
+      };
+
+    case "logout":
+      return {
+        ...state,
+        user: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialValue);
 
   useEffect(() => {
-    fetch(`/api/auth/me`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("Ran Me Query");
-        if (!isEmpty(res?.data?.user)) {
+    async function fetchData() {
+      const res = await fetch(`/api/auth/me`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.status === 401) {
+        dispatch({
+          type: "logout",
+        });
+        return;
+      } else if (res.status === 200) {
+        const {
+          data: { user },
+        } = await res.json();
+        if (user) {
           dispatch({
             type: "login",
-            user: res?.data?.user,
+            user,
           });
         }
-      });
+      }
+    }
+    fetchData();
   }, []);
 
   return (
