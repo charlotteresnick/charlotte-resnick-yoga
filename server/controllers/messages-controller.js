@@ -1,49 +1,58 @@
-const User = require("../models/User");
 const Message = require("../models/Message");
 
 const messagesController = {};
 
 messagesController.create = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body.user;
-  const salt = await bcrypt.genSaltSync();
-  const passwordHash = await bcrypt.hashSync(password, salt);
+  const { name: formName, email: formEmail, message: formMessage } = req.body;
 
-  try {
-    await User.query().insert({
-      firstName,
-      lastName,
-      email,
-      passwordHash,
-    });
-  } catch (err) {
-    return res.status(409).json({
-      message: "user already exists",
-      data: {},
-    });
+  if (!formMessage) {
+    return res.status(400).send("Bad Request");
+  }
+  if (!req.user && !(formName && formEmail)) {
+    return res.status(400).send("Bad Request");
   }
 
-  const token = generateAccessToken({ email, isAdmin: false });
-  res.cookie("token", token, { httpOnly: true });
+  let message;
+  try {
+    if (req.user) {
+      message = await Message.query().insert({
+        userId: req.user.id,
+        message: formMessage,
+      });
+    } else {
+      message = await Message.query().insert({
+        name: formName,
+        email: formEmail,
+        message: formMessage,
+      });
+    }
+  } catch (err) {
+    return res.status(500).send("Internal Server Error");
+  }
+
   return res.status(201).json({
-    message: "user created",
+    message: "message sent",
     data: {
-      user: {
-        firstName,
-        lastName,
-        email,
-        isAdmin: false,
-      },
+      message,
     },
   });
 };
 
-// TODO
-// - Add admin only
-// - Add user information to those with userId
 messagesController.getAll = async (req, res) => {
-  Message.query().then((messages) => {
-    res.json(messages);
+  const messages = await Message.query()
+    .allowGraph("user")
+    .withGraphFetched("user");
+
+  const formattedMessages = messages.map((message) => {
+    if (message.user) {
+      const { user, ...rest } = message;
+      return { ...rest, name: user.name, email: user.email };
+    } else {
+      const { user, ...rest } = message;
+      return { ...rest };
+    }
   });
+  res.json(formattedMessages);
 };
 
 module.exports = messagesController;

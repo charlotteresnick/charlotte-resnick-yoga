@@ -9,13 +9,20 @@ authController.register = (req, res, next) => {
 };
 
 authController.login = async (req, res) => {
+  if (!req.body.user) {
+    return res.status(400).send("Bad Request");
+  }
+
   const {
     user: { email: formEmail, password: formPassword },
   } = req.body;
 
+  if (!(formEmail && formPassword)) {
+    return res.status(400).send("Bad Request");
+  }
+
   const user = await User.query().findOne({ email: formEmail });
 
-  console.log();
   if (!user || !comparePass(formPassword, user.passwordHash)) {
     return res.status(401).json({
       data: {
@@ -28,8 +35,9 @@ authController.login = async (req, res) => {
       },
     });
   }
-  const { email, isAdmin, firstName, lastName } = user;
+  const { id, email, isAdmin, firstName, lastName, fullName } = user.toJSON();
   const token = generateAccessToken({
+    id,
     email,
     isAdmin,
   });
@@ -38,9 +46,11 @@ authController.login = async (req, res) => {
     message: "authenticated",
     data: {
       user: {
-        email,
+        id,
         firstName,
         lastName,
+        email,
+        fullName,
         isAdmin,
       },
     },
@@ -49,11 +59,20 @@ authController.login = async (req, res) => {
 
 authController.me = async (req, res) => {
   if (req.user) {
-    const { firstName, lastName, email, fullName, isAdmin } = req.user.toJSON();
+    const {
+      id,
+      firstName,
+      lastName,
+      email,
+      fullName,
+      isAdmin,
+    } = req.user.toJSON();
+
     return res.status(200).json({
       message: "ok",
       data: {
         user: {
+          id,
           firstName,
           lastName,
           email,

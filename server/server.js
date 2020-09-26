@@ -25,7 +25,7 @@ const apiRouter = require("./routes/api-router");
 app.use("/api", apiRouter);
 
 app.use("*", (_, res) => {
-  res.status(404).json({
+  return res.status(404).json({
     message: "not found",
   });
 });

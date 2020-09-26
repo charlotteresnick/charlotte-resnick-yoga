@@ -16,7 +16,7 @@ class Message extends Model {
         relation: Model.HasOneRelation,
         modelClass: User,
         join: {
-          from: "messages.user_id",
+          from: "messages.userId",
           to: "users.id",
         },
       },

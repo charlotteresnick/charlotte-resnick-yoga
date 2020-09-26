@@ -18,6 +18,7 @@ class User extends Model {
 
   static get relationMappings() {
     const Message = require("./Message");
+    const Class = require("./Class");
 
     return {
       messages: {
@@ -26,6 +27,18 @@ class User extends Model {
         join: {
           from: "users.id",
           to: "messages.user_id",
+        },
+      },
+      classes: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Class,
+        join: {
+          from: "classes.id",
+          through: {
+            from: "enrollments.classId",
+            to: "enrollments.userId",
+          },
+          to: "users.id",
         },
       },
     };
