@@ -15,6 +15,21 @@ class User extends Model {
   fullName() {
     return `${this.firstName} ${this.lastName}`;
   }
+
+  static get relationMappings() {
+    const Message = require("./Message");
+
+    return {
+      messages: {
+        relation: Model.HasManyRelation,
+        modelClass: Message,
+        join: {
+          from: "users.id",
+          to: "messages.user_id",
+        },
+      },
+    };
+  }
 }
 
 module.exports = User;

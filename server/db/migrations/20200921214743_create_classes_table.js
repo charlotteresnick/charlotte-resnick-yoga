@@ -1,6 +1,6 @@
 exports.up = (knex) => {
   return knex.schema.createTable("classes", (t) => {
-    t.uuid("id").defaultTo(knex.raw("uuid_generate_v4()"));
+    t.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"));
     t.string("name").notNullable();
     t.string("description").notNullable();
     t.datetime("timeStart").notNullable();

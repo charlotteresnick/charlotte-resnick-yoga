@@ -42,10 +42,16 @@ const populateFullUser = async (req, res, next) => {
     });
 };
 
+const enforceAdmin = (req, res, next) => {
+  if (!req?.user?.isAdmin) return res.sendStatus(403);
+  return next();
+};
+
 module.exports = {
   comparePass,
   generateAccessToken,
   jwtAuth,
   respondAuthErr,
   populateFullUser,
+  enforceAdmin,
 };

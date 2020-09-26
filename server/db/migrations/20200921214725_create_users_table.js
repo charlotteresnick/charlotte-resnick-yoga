@@ -1,6 +1,6 @@
 exports.up = (knex) => {
   return knex.schema.createTable("users", (t) => {
-    t.uuid("id").defaultTo(knex.raw("uuid_generate_v4()"));
+    t.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"));
     t.string("firstName").notNullable();
     t.string("lastName").notNullable();
     t.string("email").unique().notNullable();
