@@ -3,7 +3,6 @@ import { Box, Heading, Flex, Text, Button, ButtonGroup } from "@chakra-ui/core";
 import { GrSpa } from "react-icons/gr";
 
 import { CustomLink as Link } from ".";
-import { isEmpty } from "../util";
 import { useUserContext } from "../contexts/userContext";
 
 const LinkableNavbarItem = ({
@@ -13,16 +12,16 @@ const LinkableNavbarItem = ({
   onlyLoggedOut = false,
   adminOnly = false,
 }) => {
-  const [state] = useUserContext();
+  const [{ isAdmin, isLoggedIn }] = useUserContext();
 
   let shouldRender = true;
   if (onlyLoggedIn && onlyLoggedOut) {
     shouldRender = false; // Can't have both enabled
-  } else if (onlyLoggedIn && isEmpty(state.user)) {
+  } else if (onlyLoggedIn && !isLoggedIn) {
     shouldRender = false;
-  } else if (onlyLoggedOut && !isEmpty(state.user)) {
+  } else if (onlyLoggedOut && isLoggedIn) {
     shouldRender = false;
-  } else if (adminOnly && !state?.user?.isAdmin) {
+  } else if (adminOnly && !isAdmin) {
     shouldRender = false;
   }
   return shouldRender ? <Link to={url}>{children}</Link> : null;

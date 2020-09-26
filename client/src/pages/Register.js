@@ -66,21 +66,6 @@ function Register() {
         isClosable: true,
       });
     }
-
-    // await setUser({
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   password: "",
-    // });
-
-    // if (res?.data?.user) {
-    //   dispatch({
-    //     type: "login",
-    //     user: res?.data?.user,
-    //   });
-    //   history.push("/");
-    // }
   };
 
   return (

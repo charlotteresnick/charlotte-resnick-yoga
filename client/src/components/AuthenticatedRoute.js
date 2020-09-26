@@ -4,10 +4,9 @@ import { Redirect, Route } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
 
 const AuthenticatedRoute = ({ children, path, adminOnly }) => {
-  const [state] = useUserContext();
-  console.log("authenticatedRoute", state);
+  const [{ isLoggedIn, isAdmin }] = useUserContext();
 
-  if (!state?.user || (adminOnly && !state?.user?.adminOnly)) {
+  if (!isLoggedIn || (adminOnly && !isAdmin)) {
     return <Redirect to="/login" />;
   }
 

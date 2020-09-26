@@ -4,9 +4,9 @@ import { Redirect, Route } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
 
 const UnauthenticatedRoute = ({ children, path }) => {
-  const [state] = useUserContext();
+  const [{ isLoggedIn }] = useUserContext();
 
-  if (state.user) {
+  if (isLoggedIn) {
     return <Redirect to="/" />;
   }
 

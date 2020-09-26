@@ -4,6 +4,7 @@ export const UserContext = createContext(null);
 
 const initialValue = {
   user: null,
+  isLoggedIn: false,
 };
 
 const reducer = (state, { type, user }) => {
@@ -12,12 +13,16 @@ const reducer = (state, { type, user }) => {
       return {
         ...state,
         user,
+        isLoggedIn: true,
+        isAdmin: user.isAdmin,
       };
 
     case "logout":
       return {
         ...state,
         user: null,
+        isLoggedIn: false,
+        isAdmin: false,
       };
 
     default:
