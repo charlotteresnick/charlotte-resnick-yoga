@@ -5,6 +5,14 @@
   "repository": "https://github.com/charlotteresnick/charlotte-resnick-yoga.git",
   "author": "charlotteresnick <charlotte.resnick@gmail.com>",
   "license": "MIT",
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
+  "engines": {
+    "node": "14.5.0",
+    "yarn": "1.22.5"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -27,8 +35,9 @@
     "react-test-renderer": "^16.13.1"
   },
   "scripts": {
-    "start-dev": "nodemon server.js",
-    "start": "node server.js",
+    "build": "cd client/ && yarn install && yarn build",
+    "start-dev": "nodemon server/server.js",
+    "start": "node server/server.js",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run"
   }
