@@ -4,3 +4,7 @@ export { default as Footer } from "./Footer";
 export { default as ClassRegisterModal } from "./ClassRegisterModal";
 export { default as AuthenticatedRoute } from "./AuthenticatedRoute";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
+export { default as PageTitle } from "./PageTitle";
+export { default as ClassesTable } from "./admin/ClassesTable";
+export { default as UsersTable } from "./admin/UsersTable";
+export { default as Table } from "./admin/Table";

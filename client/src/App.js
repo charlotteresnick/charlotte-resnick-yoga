@@ -27,6 +27,7 @@ function App() {
             <Route exact path="/">
               <FullWidth>
                 <Home />
+                {/* <Admin /> */}
               </FullWidth>
             </Route>
             <Route path="/about">
