@@ -6,7 +6,11 @@ Charlotte Resnick Yoga
 
 ### Link To App Repo:
 
-https://github.com/charlotteresnick/yoga
+https://github.com/charlotteresnick/charlotte-resnick-yoga
+
+### Link To Deployed App on Heroku:
+
+https://stormy-refuge-76065.herokuapp.com/
 
 ## Final Screenshots:
 
