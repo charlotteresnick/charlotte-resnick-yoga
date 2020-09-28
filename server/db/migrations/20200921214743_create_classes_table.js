@@ -5,9 +5,9 @@ exports.up = (knex) => {
     t.string("description").notNullable();
     t.datetime("timeStart").notNullable();
     t.datetime("timeEnd").notNullable();
-    t.integer("price").notNullable();
+    t.string("price").notNullable();
     t.string("location").notNullable();
-    t.integer("maxStudents").notNullable();
+    t.string("maxStudents").notNullable();
     t.timestamp("createdAt").defaultTo(knex.fn.now());
     t.timestamp("updatedAt").defaultTo(knex.fn.now());
   });

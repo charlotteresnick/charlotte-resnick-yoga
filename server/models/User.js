@@ -1,9 +1,10 @@
 const { Model } = require("objection");
 const knex = require("../db/knex");
+const ModelBase = require("./ModelBase");
 
 Model.knex(knex);
 
-class User extends Model {
+class User extends ModelBase {
   static get tableName() {
     return "users";
   }

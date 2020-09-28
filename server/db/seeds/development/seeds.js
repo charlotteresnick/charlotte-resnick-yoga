@@ -21,12 +21,13 @@ exports.seed = async (knex) => {
   ]);
 
   const users = [];
-  for (let i = 0; i < 10; i++) {
+  const passwordHash = await genPassword();
+  for (let i = 0; i < 100; i++) {
     users.push({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      passwordHash: await genPassword(),
+      passwordHash,
       isAdmin: false,
     });
   }

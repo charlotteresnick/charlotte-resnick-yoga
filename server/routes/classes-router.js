@@ -6,7 +6,6 @@ classesRouter.get("/", classesController.getAll);
 
 classesRouter.post("/", classesController.create);
 
-// TODO IMplement this
-classesRouter.put("/:classId", (req, res) => {});
+classesRouter.patch("/:id", classesController.edit);
 
 module.exports = classesRouter;

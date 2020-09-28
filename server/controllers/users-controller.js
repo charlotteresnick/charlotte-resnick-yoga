@@ -48,4 +48,59 @@ usersController.create = async (req, res) => {
   });
 };
 
+usersController.edit = async (req, res) => {
+  const {
+    firstName: formFirstName,
+    lastName: formLastName,
+    email: formEmail,
+    password: formPassword,
+    isAdmin: formIsAdmin,
+  } = req.body.user;
+
+  console.log(req.body.user);
+  const userId = req.params.id;
+  console.log(userId);
+
+  let user = await User.query().findById(userId);
+  if (!user) {
+    return res.status(400).send("Bad Request");
+  }
+
+  const newFields = {};
+
+  if (formFirstName) {
+    newFields.firstName = formFirstName;
+  }
+  if (formLastName) {
+    newFields.lastName = formLastName;
+  }
+  if (formEmail && formEmail !== user.email) {
+    const conflict = await User.query().where({ email: formEmail });
+    if (conflict) {
+      return res.status(400).send("Bad Request");
+    }
+    newFields.email = formEmail;
+  }
+  if (formPassword) {
+    const salt = await bcrypt.genSaltSync();
+    const passwordHash = await bcrypt.hashSync(formPassword, salt);
+    newFields.passwordHash = passwordHash;
+  }
+  if (formIsAdmin) {
+    newFields.isAdmin = formIsAdmin === "true";
+  }
+
+  await User.query().findById(userId).patch(newFields);
+  user = await User.query().findById(userId);
+
+  const { passwordHash, ...rest } = user.toJSON();
+
+  return res.status(200).json({
+    message: "user edited",
+    data: {
+      user: rest,
+    },
+  });
+};
+
 module.exports = usersController;
